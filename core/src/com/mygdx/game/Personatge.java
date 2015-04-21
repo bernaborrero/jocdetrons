@@ -125,8 +125,12 @@ public class Personatge {
      */
     public void moure() {
         if (moureDreta) {
-            cos.applyLinearImpulse(new Vector2(0.1f, 0.0f),
-                    cos.getWorldCenter(), true);
+            if(Math.abs(cos.getLinearVelocity().y) <= 0.01) {
+                cos.setLinearVelocity(new Vector2(3.0f, 0.0f));
+            } else {
+                cos.applyLinearImpulse(new Vector2(0.1f, 0.0f), cos.getWorldCenter(), true);
+            }
+
             spriteAnimat.setDirection(AnimatedSprite.Direction.RIGHT);
 
             if (!personatgeCaraDreta) {
@@ -134,8 +138,12 @@ public class Personatge {
             }
             personatgeCaraDreta = true;
         } else if (moureEsquerra) {
-            cos.applyLinearImpulse(new Vector2(-0.1f, 0.0f),
-                    cos.getWorldCenter(), true);
+            if(Math.abs(cos.getLinearVelocity().y) <= 0.01) {
+                cos.setLinearVelocity(new Vector2(-3.0f, 0.0f));
+            } else {
+                cos.applyLinearImpulse(new Vector2(-0.1f, 0.0f), cos.getWorldCenter(), true);
+            }
+
             spriteAnimat.setDirection(AnimatedSprite.Direction.LEFT);
             if (personatgeCaraDreta) {
                 spritePersonatge.flip(true, false);
@@ -144,9 +152,9 @@ public class Personatge {
         }
 
         if (ferSalt && Math.abs(cos.getLinearVelocity().y) < 1e-9) {
-            cos.applyLinearImpulse(new Vector2(0.0f, 2.0f),
+            cos.applyLinearImpulse(new Vector2(0.0f, 3.0f),
                     cos.getWorldCenter(), true);
-            long id = soSalt.play();
+            soSalt.play();
         }
     }
 
