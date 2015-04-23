@@ -236,54 +236,58 @@
    </properties>
    <polyline points="0,0 -288.667,-1.33333"/>
   </object>
-  <object id="55" name="ground11" x="5696" y="478">
+  <object id="55" name="ground11" type="fixture" x="5696" y="478">
    <properties>
-    <property name="body" value="enviroment"/>
+    <property name="body" value="environment"/>
     <property name="material" value="ground"/>
    </properties>
    <polyline points="0,0 1,-30 64,-30 64,-62 95.375,-62 95.875,-62 95.875,-94.125 128,-94.25 128,-142 143.875,-142.25 143.875,-158.125 159.938,-158.062 159.875,-206.125 175.938,-206.062 175.938,-222.125 192,-222.125 191.875,-269.875 207.875,-270.25 207.875,-286.125 223.875,-286.125 224,-317.875 255.875,-318 256.125,-286.25 288,-285.875 287.875,-222.25 320.125,-222.375 320,-190.625 320,-190 351.875,-190.125 352,-158.5 352,-158.125 384,-158.125 384,-126.125 447.75,-126 448,-142.125 463.75,-142.125 463.75,-158 479.75,-158.125 479.875,-173.875 495.75,-174"/>
   </object>
-  <object id="57" name="ground12" x="6191.64" y="303.091">
+  <object id="57" name="ground12" type="fixture" x="6191.64" y="303.091">
    <properties>
-    <property name="body" value="enviroment"/>
+    <property name="body" value="environment"/>
     <property name="material" value="ground"/>
    </properties>
    <polyline points="0,0 0.244318,-15.2102 16.1875,-15.2102 16.2443,-31.2045 32.1818,-31.2727 32.1761,-47.1534 49.375,-47.0909"/>
   </object>
-  <object id="63" x="6241.33" y="255.667">
+  <object id="63" name="ground13" type="fixture" x="6241.33" y="255.667">
    <properties>
-    <property name="body" value="enviroment"/>
+    <property name="body" value="environment"/>
     <property name="material" value="ground"/>
    </properties>
    <polyline points="-0.125,0.3125 862.667,0.333333"/>
   </object>
-  <object id="66" x="6304" y="0">
+  <object id="66" name="ice13" type="fixture" x="6304" y="0">
    <properties>
-    <property name="body" value="enviroment"/>
+    <property name="body" value="environment"/>
     <property name="material" value="ice"/>
    </properties>
    <polyline points="0,0 -1,156 -1,160.667 1373.33,160"/>
   </object>
-  <object id="71" x="7262.67" y="158.667">
+  <object id="71" name="ice14" type="fixture" x="7262.67" y="158.667">
    <properties>
-    <property name="body" value="enviroment"/>
+    <property name="body" value="environment"/>
     <property name="material" value="ice"/>
    </properties>
    <polyline points="131,3 130.333,323.333"/>
   </object>
-  <object id="79" x="7231" y="479">
+  <object id="79" name="death" type="fixture" x="7231" y="479">
+   <properties>
+    <property name="body" value="environment"/>
+    <property name="material" value="death"/>
+   </properties>
    <polyline points="0,0 161,0"/>
   </object>
-  <object id="81" x="7393" y="383">
+  <object id="81" name="ground14" type="fixture" x="7393" y="383">
    <properties>
-    <property name="body" value="enviroment"/>
+    <property name="body" value="environment"/>
     <property name="material" value="ground"/>
    </properties>
    <polyline points="6,2 285,2"/>
   </object>
-  <object id="82" x="7103" y="255">
+  <object id="82" name="ice15" type="fixture" x="7103" y="255">
    <properties>
-    <property name="body" value="enviroment"/>
+    <property name="body" value="environment"/>
     <property name="material" value="ground"/>
    </properties>
    <polyline points="0,0 128,128 128,219"/>
