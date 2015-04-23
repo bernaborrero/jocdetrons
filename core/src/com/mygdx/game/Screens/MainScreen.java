@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -29,7 +28,7 @@ public class MainScreen extends AbstractScreen {
     /**
      * Estils
      */
-    private final Skin skin;
+    private final Skin skin, skinDefault;
     /**
 	 * Variable d'instancia que permet gestionar i pintar el mapa a partir d'un
 	 * TiledMap (TMX)
@@ -39,6 +38,7 @@ public class MainScreen extends AbstractScreen {
 	// objecte que gestiona el protagonista del joc
 	// ---->private PersonatgeBackup personatge;
     Personatge personatge;
+    private int remainingLives;
 	/**
 	 * Objecte que cont� tots els cossos del joc als quals els aplica la
 	 * simulaci�
@@ -66,7 +66,7 @@ public class MainScreen extends AbstractScreen {
     /**
      * Per mostrar el títol
      */
-    private Label title;
+    private Label title, livesLabel;
     private Table table = new Table();
 
     /**
@@ -76,12 +76,16 @@ public class MainScreen extends AbstractScreen {
     //private ArrayList<Body> bodyDestroyList;
 	
 
-	public MainScreen(JocDeTrons joc) {
+	public MainScreen(JocDeTrons joc, int remainingLives) {
 		super(joc);
+        this.remainingLives = remainingLives;
 
         // carregar el fitxer d'skins
         skin = new Skin(Gdx.files.internal("skins/skin.json"));
+        skinDefault = new Skin(Gdx.files.internal("skins/uiskin.json"));
         title = new Label(joc.getTitol(),skin, "groc");
+        livesLabel = new Label("Vides: " + remainingLives, skinDefault, "black");
+
 		/*
 		 * Crear el mon on es desenvolupa el joc. S'indica la gravetat: negativa
 		 * perquè indica cap avall
@@ -92,13 +96,15 @@ public class MainScreen extends AbstractScreen {
 		carregarObjectes();
 		carregarMusica();
 
+        // crear el personatge
+        personatge = new Personatge(world);
+        personatge.setLives(remainingLives);
+
         // --- si es volen destruir objectes, descomentar ---
 		//bodyDestroyList= new ArrayList<Body>();
 		//world.setContactListener(new GestorContactes(bodyDestroyList));
-		world.setContactListener(new GestorContactes());
+		world.setContactListener(new GestorContactes(personatge));
 
-		// crear el personatge
-        personatge = new Personatge(world);
         // objecte que permet debugar les col·lisions
 		//debugRenderer = new Box2DDebugRenderer();
 	}
@@ -257,10 +263,12 @@ public class MainScreen extends AbstractScreen {
 	
 	@Override
 	public void render(float delta) {
-		 personatge.inicialitzarMoviments();
-		 tractarEventsEntrada();
-	     personatge.moure();
-         personatge.updatePosition();
+        livesLabel.setText("Vides: " + personatge.getLives());
+
+        personatge.inicialitzarMoviments();
+		tractarEventsEntrada();
+	    personatge.moure();
+        personatge.updatePosition();
 
 
         /**
@@ -306,9 +314,19 @@ public class MainScreen extends AbstractScreen {
         //debugRenderer.render(world, tiledMapHelper.getCamera().combined.scale(
 		//		JocDeTrons.PIXELS_PER_METRE, JocDeTrons.PIXELS_PER_METRE,
 		//		JocDeTrons.PIXELS_PER_METRE));
+
+        if(personatge.getLives() < remainingLives) {
+
+            if(personatge.getLives() == 0) {
+                Gdx.app.log("JocDeTrons", "El personatge ha mort!");
+                getGame().setScreen(new GameOverScreen(getGame()));
+            } else {
+                getGame().setScreen(new MainScreen(getGame(), --remainingLives));
+            }
+        }
 	}
 
-	@Override
+    @Override
 	public void dispose() {
 		musica.stop();
 		musica.dispose();
@@ -320,7 +338,8 @@ public class MainScreen extends AbstractScreen {
         // Els elements es mostren en l'ordre que s'afegeixen.
         // El primer apareix a la part superior, el darrer a la part inferior.
         table.center().top();
-        Cell cell = table.add(title).padTop(5);
+        table.add(title).padTop(5);
+        table.add(livesLabel).padTop(5).padLeft(100);
         table.setFillParent(true);
         stage.addActor(table);
     }
