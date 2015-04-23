@@ -16,11 +16,14 @@ import java.util.ArrayList;
  *
  */
 public class GestorContactes implements ContactListener {
+
+    private Personatge personatge;
+
 	// de moment, no implementat
 	private ArrayList<Body> bodyDestroyList;
 
-	public GestorContactes() {
-		
+	public GestorContactes(Personatge personatge) {
+		this.personatge = personatge;
 	}
 	
 	public GestorContactes(ArrayList<Body> bodyDestroyList) {
@@ -37,6 +40,11 @@ public class GestorContactes implements ContactListener {
 				|| fixtureB.getBody().getUserData() == null) {
 			return;
 		}
+
+        if (fixtureA.getBody().getUserData().equals("Personatge") && fixtureB.getBody().getUserData().equals("death")
+                || fixtureA.getBody().getUserData().equals("death") && fixtureB.getBody().getUserData().equals("Personatge")) {
+            personatge.setLives(personatge.getLives() - 1);
+        }
 
 		if (fixtureA.getBody().getUserData().equals("stark")
 				&& fixtureB.getBody().getUserData().equals("primerObjecte")

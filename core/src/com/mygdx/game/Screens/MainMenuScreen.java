@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.game.JocDeTrons;
+import com.mygdx.game.Personatge;
 
 public class MainMenuScreen extends AbstractScreen {
 
@@ -37,7 +38,7 @@ public class MainMenuScreen extends AbstractScreen {
                 //Same way we moved here from the Splash Screen
                 //We set it to new Splash because we got no other screens
                 //otherwise you put the screen there where you want to go
-                ((Game)Gdx.app.getApplicationListener()).setScreen(new MainScreen(getGame()));
+                ((Game)Gdx.app.getApplicationListener()).setScreen(new MainScreen(getGame(), Personatge.MAX_LIVES));
             }
         });
         buttonExit.addListener(new ClickListener(){

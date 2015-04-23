@@ -18,6 +18,7 @@ import com.badlogic.gdx.physics.box2d.World;
 public class Personatge {
     public static final int FRAME_COLS = 9;
     public static final int FRAME_ROWS = 2;
+    public static final int MAX_LIVES = 3;
     /**
      * Detectar el moviment
      */
@@ -25,6 +26,7 @@ public class Personatge {
     private boolean moureDreta;
     private boolean ferSalt;
     private boolean personatgeCaraDreta;
+    private int lives;
 
     private World world;                // Referència al mon on està definit el personatge
     private Body cos;                   // per definir les propietats del cos
@@ -36,6 +38,7 @@ public class Personatge {
 
 
     public Personatge(World world) {
+        lives = MAX_LIVES;
         moureEsquerra = moureDreta = ferSalt = false;
         this.world = world;
         carregarTextures();
@@ -188,7 +191,14 @@ public class Personatge {
 
     public void setCaraDreta(boolean caraDreta) {
         this.personatgeCaraDreta = caraDreta;
+    }
 
+    public int getLives() {
+        return lives;
+    }
+
+    public void setLives(int lives) {
+        this.lives = lives;
     }
 
     public Sound getSoSalt() {
@@ -215,7 +225,6 @@ public class Personatge {
     public void setTextura(Texture textura) {
         this.stoppedTexture = textura;
     }
-
 
     public void dispose() {
         animatedTexture.dispose();
