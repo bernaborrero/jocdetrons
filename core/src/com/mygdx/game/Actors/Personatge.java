@@ -13,6 +13,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.game.AnimatedSprite;
 import com.mygdx.game.JocDeTrons;
+import com.mygdx.game.Screens.MainScreen;
 
 /**
  * Classe que implementa el protagonista del joc
@@ -37,9 +38,10 @@ public class Personatge {
     private Texture stoppedTexture;     // la seva textura
     private Sound soSalt;               // el so que reprodueix en saltar
     private Texture animatedTexture;
+    private MainScreen.Protagonista protagonista;
 
-
-    public Personatge(World world) {
+    public Personatge(World world, MainScreen.Protagonista protagonista) {
+        this.protagonista = protagonista;
         lives = MAX_LIVES;
         moureEsquerra = moureDreta = ferSalt = false;
         this.world = world;
@@ -50,11 +52,20 @@ public class Personatge {
 
 
     private void carregarTextures() {
-        animatedTexture = new Texture(Gdx.files.internal("imatges/warriorSpriteSheet.png"));
-        animatedTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        if(protagonista == MainScreen.Protagonista.WARRIOR){
+            animatedTexture = new Texture(Gdx.files.internal("imatges/warriorSpriteSheet.png"));
+            animatedTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
-        stoppedTexture = new Texture(Gdx.files.internal("imatges/warrior.png"));
-        stoppedTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+            stoppedTexture = new Texture(Gdx.files.internal("imatges/warrior.png"));
+            stoppedTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        }else{
+            animatedTexture = new Texture(Gdx.files.internal("imatges/leonidasSpriteSheet.png"));
+            animatedTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+
+            stoppedTexture = new Texture(Gdx.files.internal("imatges/leonidas.png"));
+            stoppedTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        }
+
     }
 
     /**

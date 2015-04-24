@@ -26,6 +26,9 @@ import com.mygdx.game.TiledMapHelper;
  */
 public class MainScreen extends AbstractScreen {
 
+    public enum Protagonista{
+        WARRIOR,LEONIDAS;
+    }
     /**
      * Estils
      */
@@ -70,7 +73,7 @@ public class MainScreen extends AbstractScreen {
      */
     private Label title, livesLabel;
     private Table table = new Table();
-
+    private Protagonista protagonista;
     /**
      * per indicar quins cossos s'han de destruir
      * @param joc
@@ -78,10 +81,10 @@ public class MainScreen extends AbstractScreen {
     //private ArrayList<Body> bodyDestroyList;
 	
 
-	public MainScreen(JocDeTrons joc, int remainingLives) {
+	public MainScreen(JocDeTrons joc, int remainingLives,Protagonista protagonista ) {
 		super(joc);
         this.remainingLives = remainingLives;
-
+        this.protagonista = protagonista;
         // carregar el fitxer d'skins
         skin = new Skin(Gdx.files.internal("skins/skin.json"));
         skinDefault = new Skin(Gdx.files.internal("skins/uiskin.json"));
@@ -99,8 +102,14 @@ public class MainScreen extends AbstractScreen {
 		carregarMusica();
 
         // crear el personatge
-        personatge = new Personatge(world);
-        personatge.setLives(remainingLives);
+        if(protagonista == Protagonista.LEONIDAS){
+            personatge = new Personatge(world,protagonista);
+            personatge.setLives(remainingLives);
+        }else{
+            personatge = new Personatge(world,protagonista);
+            personatge.setLives(remainingLives);
+        }
+
 
         key = new Key(world);
 
@@ -327,9 +336,9 @@ public class MainScreen extends AbstractScreen {
 
             if(personatge.getLives() == 0) {
                 Gdx.app.log("JocDeTrons", "El personatge ha mort!");
-                getGame().setScreen(new GameOverScreen(getGame()));
+                getGame().setScreen(new GameOverScreen(getGame(),protagonista));
             } else {
-                getGame().setScreen(new MainScreen(getGame(), --remainingLives));
+                getGame().setScreen(new MainScreen(getGame(), --remainingLives, protagonista));
             }
         }
 	}

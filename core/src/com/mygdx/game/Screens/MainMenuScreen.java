@@ -17,10 +17,10 @@ public class MainMenuScreen extends AbstractScreen {
 
     private Stage stage = new Stage();
     private Table table = new Table();
-
+    private MainScreen.Protagonista protagonista;
     private Skin skin;
 
-    private TextButton buttonPlay, buttonExit;
+    private TextButton buttonPlayWar,buttonPlayLeo, buttonExit;
     private Label title;
     /**
      * Constructor
@@ -30,15 +30,27 @@ public class MainMenuScreen extends AbstractScreen {
     public MainMenuScreen(JocDeTrons joc) {
         super(joc);
         skin = new Skin(Gdx.files.internal("skins/skin.json"));
-        buttonPlay = new TextButton("Play", skin);
+        buttonPlayWar = new TextButton("Play with Warrior", skin);
+        buttonPlayLeo = new TextButton("Play with Leonidas", skin);
         buttonExit = new TextButton("Exit", skin);
-        buttonPlay.addListener(new ClickListener(){
+        buttonPlayWar.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                protagonista = MainScreen.Protagonista.WARRIOR;
                 //Same way we moved here from the Splash Screen
                 //We set it to new Splash because we got no other screens
                 //otherwise you put the screen there where you want to go
-                ((Game)Gdx.app.getApplicationListener()).setScreen(new MainScreen(getGame(), Personatge.MAX_LIVES));
+                ((Game)Gdx.app.getApplicationListener()).setScreen(new MainScreen(getGame(), Personatge.MAX_LIVES,protagonista));
+            }
+        });
+        buttonPlayLeo.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                protagonista = MainScreen.Protagonista.LEONIDAS;
+                //Same way we moved here from the Splash Screen
+                //We set it to new Splash because we got no other screens
+                //otherwise you put the screen there where you want to go
+                ((Game)Gdx.app.getApplicationListener()).setScreen(new MainScreen(getGame(), Personatge.MAX_LIVES,protagonista));
             }
         });
         buttonExit.addListener(new ClickListener(){
@@ -72,7 +84,8 @@ public class MainMenuScreen extends AbstractScreen {
         //The first appear on top, the last at the bottom.
         table.add(title).padBottom(40).row();
 
-        table.add(buttonPlay).size(150,60).padBottom(20).row();
+        table.add(buttonPlayWar).size(150,60).padBottom(20).row();
+        table.add(buttonPlayLeo).size(150,60).padBottom(20).row();
         table.add(buttonExit).size(150, 60).padBottom(20).row();
         table.setFillParent(true);
         stage.addActor(table);
