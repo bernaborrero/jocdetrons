@@ -6,6 +6,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -13,10 +14,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.mygdx.game.Actors.Key;
 import com.mygdx.game.Actors.Personatge;
+import com.mygdx.game.Actors.Vortex;
 import com.mygdx.game.GestorContactes;
 import com.mygdx.game.JocDeTrons;
 import com.mygdx.game.MapBodyManager;
 import com.mygdx.game.TiledMapHelper;
+
+import java.util.ArrayList;
 
 /**
  * Una pantalla del joc
@@ -27,7 +31,7 @@ import com.mygdx.game.TiledMapHelper;
 public class MainScreen extends AbstractScreen {
 
     public enum Protagonista{
-        WARRIOR,LEONIDAS;
+        WARRIOR,LEONIDAS
     }
     /**
      * Estils
@@ -42,7 +46,9 @@ public class MainScreen extends AbstractScreen {
 	// objecte que gestiona el protagonista del joc
 	// ---->private PersonatgeBackup personatge;
     Personatge personatge;
+    Vortex vortex;
     Key key;
+
     private int remainingLives;
 	/**
 	 * Objecte que cont� tots els cossos del joc als quals els aplica la
@@ -74,11 +80,7 @@ public class MainScreen extends AbstractScreen {
     private Label title, livesLabel;
     private Table table = new Table();
     private Protagonista protagonista;
-    /**
-     * per indicar quins cossos s'han de destruir
-     * @param joc
-     */
-    //private ArrayList<Body> bodyDestroyList;
+    private ArrayList<Body> bodyDestroyList;
 	
 
 	public MainScreen(JocDeTrons joc, int remainingLives,Protagonista protagonista ) {
@@ -110,16 +112,11 @@ public class MainScreen extends AbstractScreen {
             personatge.setLives(remainingLives);
         }
 
-
+        vortex = new Vortex(world);
         key = new Key(world);
 
-        // --- si es volen destruir objectes, descomentar ---
-		//bodyDestroyList= new ArrayList<Body>();
-		//world.setContactListener(new GestorContactes(bodyDestroyList));
-		world.setContactListener(new GestorContactes(personatge));
-
-        // objecte que permet debugar les col·lisions
-		//debugRenderer = new Box2DDebugRenderer();
+		bodyDestroyList= new ArrayList<Body>();
+		world.setContactListener(new GestorContactes(bodyDestroyList, personatge, key));
 	}
 
     /**
@@ -152,39 +149,7 @@ public class MainScreen extends AbstractScreen {
 		// actualitzar els nous valors de la càmera
 		tiledMapHelper.getCamera().update();
 	}
-/*
-    @Override
-    public boolean keyUp(int keycode) {
-        personatge.inicialitzarMoviments();
-        if(keycode == Input.Keys.DPAD_RIGHT) {
-            personatge.setMoureDreta(true);
-        } else if(keycode == Input.Keys.DPAD_LEFT) {
-            personatge.setMoureEsquerra(true);
-        } else if(keycode == Input.Keys.DPAD_UP) {
-            personatge.setFerSalt(true);
-        }
 
-        //personatge.moure();
-        //personatge.updatePosition();
-        return true;
-    }
-
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        personatge.inicialitzarMoviments();
-
-        if (screenX > Gdx.graphics.getWidth() * 0.80f) {
-            personatge.setMoureDreta(true);
-        } else if(screenX > Gdx.graphics.getWidth() * 0.20f) {
-            personatge.setMoureEsquerra(true);
-        } else if(screenY < Gdx.graphics.getHeight() * 0.20f) {
-            personatge.setFerSalt(true);
-        }
-        //personatge.moure();
-        //personatge.updatePosition();
-        return true;
-    }
-    */
     /**
      * tractar els events de l'entrada
      */
@@ -279,12 +244,14 @@ public class MainScreen extends AbstractScreen {
         livesLabel.setText("Vides: " + personatge.getLives());
 
         personatge.inicialitzarMoviments();
+        vortex.initialize();
         key.initialize();
 
 		tractarEventsEntrada();
 
 	    personatge.moure();
         personatge.updatePosition();
+        vortex.updatePosition();
         key.updatePosition();
 
         /**
@@ -296,14 +263,11 @@ public class MainScreen extends AbstractScreen {
          */
 		world.step(Gdx.app.getGraphics().getDeltaTime(), 6, 2);
 
-		/*
-		 * per destruir cossos marcats per ser eliminats
-		 */
-        /*	for(int i = bodyDestroyList.size()-1; i >=0; i-- ) {
-		    	world.destroyBody(bodyDestroyList.get(i));
+        // delete dead bodies
+        for(int i = bodyDestroyList.size()-1; i >=0; i-- ) {
+            world.destroyBody(bodyDestroyList.get(i));
 		}
 		bodyDestroyList.clear();
-        */
 
 		// Esborrar la pantalla
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -316,21 +280,16 @@ public class MainScreen extends AbstractScreen {
 		tiledMapHelper.render();
 		// Preparar l'objecte SpriteBatch per dibuixar la resta d'elements
 		batch.setProjectionMatrix(tiledMapHelper.getCamera().combined);
-		// iniciar el lot
+
 		batch.begin();
     		personatge.dibuixar(batch);
+            vortex.draw(batch);
             key.draw(batch);
-	    	// finalitzar el lot: a partir d'aquest moment es dibuixa tot el que
-		    // s'ha indicat entre begin i end
 		batch.end();
 
         // dibuixar els controls de pantalla
         stage.act();
         stage.draw();
-
-        //debugRenderer.render(world, tiledMapHelper.getCamera().combined.scale(
-		//		JocDeTrons.PIXELS_PER_METRE, JocDeTrons.PIXELS_PER_METRE,
-		//		JocDeTrons.PIXELS_PER_METRE));
 
         if(personatge.getLives() < remainingLives) {
 

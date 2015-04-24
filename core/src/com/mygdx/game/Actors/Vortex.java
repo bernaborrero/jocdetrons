@@ -13,45 +13,42 @@ import com.mygdx.game.AnimatedSprite;
 import com.mygdx.game.JocDeTrons;
 
 /**
- * Clau per desbloquejar el premi
+ * Vortex on es guanya el joc
  * Created by Bernabé Borrero on 24/04/15.
  */
-public class Key {
+public class Vortex {
 
-    public static final int FRAME_COLS = 12;
+    public static final int FRAME_COLS = 4;
     public static final int FRAME_ROWS = 2;
 
     private World world;
     private Texture animatedTexture;
     private Texture stoppedTexture;
-    private Sprite spriteKey;
-    private AnimatedSprite spriteAnimatedKey;
+    private Sprite spriteVortex;
+    private AnimatedSprite spriteAnimatedVortex;
     private Body body;
 
-    private boolean dead;
-
-    public Key(World world) {
+    public Vortex(World world) {
         this.world = world;
-        this.dead = false;
         loadTextures();
         createKey();
     }
 
     private void loadTextures() {
-        animatedTexture = new Texture(Gdx.files.internal("imatges/keySpriteSheet.png"));
+        animatedTexture = new Texture(Gdx.files.internal("imatges/vortexSpriteSheet.png"));
         animatedTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
-        stoppedTexture = new Texture(Gdx.files.internal("imatges/key.png"));
+        stoppedTexture = new Texture(Gdx.files.internal("imatges/vortex.png"));
         stoppedTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
     }
 
     private void createKey() {
-        spriteKey = new Sprite(animatedTexture);
-        spriteAnimatedKey = new AnimatedSprite(spriteKey, FRAME_COLS, FRAME_ROWS, stoppedTexture);
+        spriteVortex = new Sprite(animatedTexture);
+        spriteAnimatedVortex = new AnimatedSprite(spriteVortex, FRAME_COLS, FRAME_ROWS, stoppedTexture);
 
         BodyDef defCos = new BodyDef();
         defCos.type = BodyDef.BodyType.StaticBody;
-        defCos.position.set(81.0f, 3.0f);
+        defCos.position.set(20.0f, 3.0f);
 
         body = world.createBody(defCos);
         body.setUserData("Key");
@@ -60,8 +57,8 @@ public class Key {
          * Definir les vores de l'sprite
          */
         PolygonShape requadre = new PolygonShape();
-        requadre.setAsBox((spriteKey.getWidth() / FRAME_COLS) / (2 * JocDeTrons.PIXELS_PER_METRE),
-                (spriteKey.getHeight() / FRAME_ROWS) / (2 * JocDeTrons.PIXELS_PER_METRE));
+        requadre.setAsBox((spriteVortex.getWidth() / FRAME_COLS) / (2 * JocDeTrons.PIXELS_PER_METRE),
+                (spriteVortex.getHeight() / FRAME_ROWS) / (2 * JocDeTrons.PIXELS_PER_METRE));
 
         /**
          * La densitat i fricció del protagonista. Si es modifiquen aquests
@@ -78,35 +75,25 @@ public class Key {
     }
 
     public void initialize() {
-        spriteAnimatedKey.setDirection(AnimatedSprite.Direction.RIGHT);
+        spriteAnimatedVortex.setDirection(AnimatedSprite.Direction.STOPPED);
     }
 
     public void updatePosition() {
-        spriteKey.setPosition(
+        spriteVortex.setPosition(
                 JocDeTrons.PIXELS_PER_METRE * body.getPosition().x
-                        - spriteKey.getWidth() / FRAME_COLS / 2,
+                        - spriteVortex.getWidth() / FRAME_COLS / 2,
                 JocDeTrons.PIXELS_PER_METRE * body.getPosition().y
-                        - spriteKey.getHeight() / FRAME_ROWS / 2);
-        spriteAnimatedKey.setPosition(spriteKey.getX(), spriteKey.getY());
+                        - spriteVortex.getHeight() / FRAME_ROWS / 2);
+        spriteAnimatedVortex.setPosition(spriteVortex.getX(), spriteVortex.getY());
     }
 
     public void draw(SpriteBatch batch) {
-        if(!isDead()) {
-            spriteAnimatedKey.draw(batch);
-        }
+        spriteAnimatedVortex.draw(batch);
     }
 
     public void dispose() {
         animatedTexture.dispose();
         stoppedTexture.dispose();
-    }
-
-    public boolean isDead() {
-        return dead;
-    }
-
-    public void setDead(boolean dead) {
-        this.dead = dead;
     }
 
 }

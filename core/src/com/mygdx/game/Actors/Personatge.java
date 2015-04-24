@@ -83,6 +83,7 @@ public class Personatge {
         BodyDef defCos = new BodyDef();
         defCos.type = BodyDef.BodyType.DynamicBody;
         defCos.position.set(2.0f, 3.0f);
+//        defCos.position.set(78.0f, 3.0f);
 
         cos = world.createBody(defCos);
         cos.setUserData("Personatge");
@@ -244,4 +245,5 @@ public class Personatge {
         stoppedTexture.dispose();
         soSalt.dispose();
     }
+
 }
