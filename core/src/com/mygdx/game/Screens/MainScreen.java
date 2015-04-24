@@ -11,10 +11,11 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.mygdx.game.Actors.Key;
+import com.mygdx.game.Actors.Personatge;
 import com.mygdx.game.GestorContactes;
 import com.mygdx.game.JocDeTrons;
 import com.mygdx.game.MapBodyManager;
-import com.mygdx.game.Actors.Personatge;
 import com.mygdx.game.TiledMapHelper;
 
 /**
@@ -38,6 +39,7 @@ public class MainScreen extends AbstractScreen {
 	// objecte que gestiona el protagonista del joc
 	// ---->private PersonatgeBackup personatge;
     Personatge personatge;
+    Key key;
     private int remainingLives;
 	/**
 	 * Objecte que cont� tots els cossos del joc als quals els aplica la
@@ -99,6 +101,8 @@ public class MainScreen extends AbstractScreen {
         // crear el personatge
         personatge = new Personatge(world);
         personatge.setLives(remainingLives);
+
+        key = new Key(world);
 
         // --- si es volen destruir objectes, descomentar ---
 		//bodyDestroyList= new ArrayList<Body>();
@@ -266,10 +270,13 @@ public class MainScreen extends AbstractScreen {
         livesLabel.setText("Vides: " + personatge.getLives());
 
         personatge.inicialitzarMoviments();
+        key.initialize();
+
 		tractarEventsEntrada();
+
 	    personatge.moure();
         personatge.updatePosition();
-
+        key.updatePosition();
 
         /**
          * Cal actualitzar les posicions i velocitats de tots els objectes. El
@@ -303,6 +310,7 @@ public class MainScreen extends AbstractScreen {
 		// iniciar el lot
 		batch.begin();
     		personatge.dibuixar(batch);
+            key.draw(batch);
 	    	// finalitzar el lot: a partir d'aquest moment es dibuixa tot el que
 		    // s'ha indicat entre begin i end
 		batch.end();

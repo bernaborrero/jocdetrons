@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -18,7 +19,7 @@ import com.mygdx.game.JocDeTrons;
  */
 public class Key {
 
-    public static final int FRAME_COLS = 4;
+    public static final int FRAME_COLS = 12;
     public static final int FRAME_ROWS = 2;
 
     private World world;
@@ -56,7 +57,7 @@ public class Key {
 
         BodyDef defCos = new BodyDef();
         defCos.type = BodyDef.BodyType.StaticBody;
-        defCos.position.set(4.0f, 3.0f);
+        defCos.position.set(6.0f, 3.0f);
 
         body = world.createBody(defCos);
         body.setUserData("Key");
@@ -80,6 +81,23 @@ public class Key {
         body.setFixedRotation(true);
         body.createFixture(propietats);
         requadre.dispose();
+    }
+
+    public void initialize() {
+        spriteAnimatedKey.setDirection(AnimatedSprite.Direction.RIGHT);
+    }
+
+    public void updatePosition() {
+        spriteKey.setPosition(
+                JocDeTrons.PIXELS_PER_METRE * body.getPosition().x
+                        - spriteKey.getWidth() / FRAME_COLS / 2,
+                JocDeTrons.PIXELS_PER_METRE * body.getPosition().y
+                        - spriteKey.getHeight() / FRAME_ROWS / 2);
+        spriteAnimatedKey.setPosition(spriteKey.getX(), spriteKey.getY());
+    }
+
+    public void draw(SpriteBatch batch) {
+        spriteAnimatedKey.draw(batch);
     }
 
     public void dispose() {
