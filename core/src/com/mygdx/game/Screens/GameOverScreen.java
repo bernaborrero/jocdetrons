@@ -24,15 +24,15 @@ public class GameOverScreen extends AbstractScreen {
     private Skin skin;
     private Label gameOverLabel;
     private TextButton playAgainButton, exitButton;
-
+    private MainScreen.Protagonista protagonista;
     /**
      * Constructor
      *
      * @param joc Classe principal del joc
      */
-    public GameOverScreen(JocDeTrons joc) {
+    public GameOverScreen(JocDeTrons joc,MainScreen.Protagonista protagonista) {
         super(joc);
-
+        this.protagonista = protagonista;
         stage = new Stage();
         table = new Table();
 
@@ -49,7 +49,7 @@ public class GameOverScreen extends AbstractScreen {
         playAgainButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                getGame().setScreen(new MainScreen(getGame(), Personatge.MAX_LIVES));
+                getGame().setScreen(new MainScreen(getGame(), Personatge.MAX_LIVES,protagonista));
             }
         });
 
