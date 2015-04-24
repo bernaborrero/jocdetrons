@@ -14,7 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.mygdx.game.GestorContactes;
 import com.mygdx.game.JocDeTrons;
 import com.mygdx.game.MapBodyManager;
-import com.mygdx.game.Personatge;
+import com.mygdx.game.Actors.Personatge;
 import com.mygdx.game.TiledMapHelper;
 
 /**
