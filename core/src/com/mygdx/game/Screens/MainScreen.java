@@ -5,10 +5,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -78,6 +80,8 @@ public class MainScreen extends AbstractScreen {
      * Per mostrar el títol
      */
     private Label title, livesLabel;
+    private ArrayList<Image> lives;
+    private Texture liveTexture;
     private Table table = new Table();
     private Protagonista protagonista;
     private ArrayList<Body> bodyDestroyList;
@@ -91,7 +95,12 @@ public class MainScreen extends AbstractScreen {
         skin = new Skin(Gdx.files.internal("skins/skin.json"));
         skinDefault = new Skin(Gdx.files.internal("skins/uiskin.json"));
         title = new Label(joc.getTitol(),skin, "groc");
-        livesLabel = new Label("Vides: " + remainingLives, skinDefault, "black");
+//        livesLabel = new Label("Vides: " + remainingLives, skinDefault, "black");
+        lives = new ArrayList<Image>();
+        liveTexture = new Texture(Gdx.files.internal("imatges/life.png"));
+        for (int i=0; i<remainingLives; i++){
+            lives.add(new Image(liveTexture));
+        }
 
 		/*
 		 * Crear el mon on es desenvolupa el joc. S'indica la gravetat: negativa
@@ -241,8 +250,10 @@ public class MainScreen extends AbstractScreen {
 	
 	@Override
 	public void render(float delta) {
-        livesLabel.setText("Vides: " + personatge.getLives());
-
+//        livesLabel.setText("Vides: " + personatge.getLives());
+        if(remainingLives-personatge.getLives()!=0){
+            lives.remove(0);
+        }
         personatge.inicialitzarMoviments();
         vortex.initialize();
         key.initialize();
@@ -315,7 +326,15 @@ public class MainScreen extends AbstractScreen {
         // El primer apareix a la part superior, el darrer a la part inferior.
         table.center().top();
         table.add(title).padTop(5);
-        table.add(livesLabel).padTop(5).padLeft(100);
+//        table.add(livesLabel).padTop(5).padLeft(100);
+        for(int i=0;i<remainingLives;i++){
+            if(i==0){
+                table.add(lives.get(i)).padTop(5).padLeft(300);
+            }else{
+                table.add(lives.get(i)).padTop(5).padLeft(10);
+            }
+
+        }
         table.setFillParent(true);
         stage.addActor(table);
     }
