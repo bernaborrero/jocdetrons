@@ -227,8 +227,10 @@ public class MainScreen extends AbstractScreen {
 	 * Carregar i reproduir l'arxiu de música de fons
 	 */
 	public void carregarMusica() {
-		musica = Gdx.audio.newMusic(Gdx.files
-				.internal("sons/gameOfThrones.mp3"));
+//		musica = Gdx.audio.newMusic(Gdx.files
+//				.internal("sons/gameOfThrones.mp3"));
+        musica = Gdx.audio.newMusic(Gdx.files
+				.internal("sons/BarbaraStreisand.mp3"));
 		musica.setLooping(true);
 		musica.setVolume(0.5f);
 		musica.play();
