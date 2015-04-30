@@ -1,6 +1,9 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.mygdx.game.Screens.SplashScreen;
 
 
@@ -18,6 +21,7 @@ public class JocDeTrons extends Game {
 
 	// cont� el t�tol del joc
 	private String titol;
+    private Skin skin;
 
 
 	/**
@@ -59,10 +63,14 @@ public class JocDeTrons extends Game {
 
 	@Override
 	public void create() {
+        skin = new Skin(Gdx.files.internal("skins/skin.json"));
+        if(Gdx.app.getType() == Application.ApplicationType.Android) {
+            skin.getFont("default-font").setScale(Gdx.graphics.getDensity(), Gdx.graphics.getDensity());
+        }
+
 		setScreen(new SplashScreen(this));
         //setScreen( new Animator(this));
 	}
-
 	
 	@Override
 	public void resume() {
@@ -75,9 +83,13 @@ public class JocDeTrons extends Game {
 
 	}
 
+    @Override
+    public void dispose() {
+        super.dispose();
+        skin.dispose();
+    }
 
-
-	@Override
+    @Override
 	public void resize(int width, int height) {
 
 	}
@@ -110,4 +122,8 @@ public class JocDeTrons extends Game {
 	public void setScreenHeight(int screenHeight) {
 		this.screenHeight = screenHeight;
 	}
+
+    public Skin getSkin() {
+        return skin;
+    }
 }

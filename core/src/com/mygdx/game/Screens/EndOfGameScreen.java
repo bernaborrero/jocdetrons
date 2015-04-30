@@ -22,7 +22,7 @@ public class EndOfGameScreen extends AbstractScreen {
     private Table table;
 
     private Skin skin;
-    private Label gameOverLabel;
+    private Label gameOverLabel, creditsLabel;
     private TextButton playAgainButton, exitButton;
     private MainScreen.Protagonista protagonista;
     private boolean victory;
@@ -39,10 +39,11 @@ public class EndOfGameScreen extends AbstractScreen {
         stage = new Stage();
         table = new Table();
 
-        skin = new Skin(Gdx.files.internal("skins/skin.json"));
+        skin = joc.getSkin();
 
         String message = (victory) ? "Congratulations!" : "Game Over!";
         gameOverLabel = new Label(message, skin, "red");
+        creditsLabel = new Label("Fet per l Aitor i en Berna", skin, "groc");
         playAgainButton = new TextButton("Play Again?", skin);
         exitButton = new TextButton("Exit", skin);
 
@@ -75,20 +76,22 @@ public class EndOfGameScreen extends AbstractScreen {
 
     @Override
     public void show() {
-        table.add(gameOverLabel).padBottom(40).row();
 
-        table.add(playAgainButton).size(150,60).padBottom(20).row();
-        table.add(exitButton).size(150, 60).padBottom(20).row();
+        float titlePadding = 40 * Gdx.graphics.getDensity();
+        float buttonsPaddingX = 150 * Gdx.graphics.getDensity();
+        float buttonsPaddingY = 60 * Gdx.graphics.getDensity();
+        float buttonsPaddingB = 20 * Gdx.graphics.getDensity();
+
+        table.add(gameOverLabel).padBottom(titlePadding).row();
+
+        table.add(playAgainButton).size(buttonsPaddingX, buttonsPaddingY).padBottom(buttonsPaddingB).row();
+        table.add(exitButton).size(buttonsPaddingX, buttonsPaddingY).padBottom(buttonsPaddingB).row();
+
+        table.add(creditsLabel).padBottom(10).row();
         table.setFillParent(true);
         stage.addActor(table);
 
         Gdx.input.setInputProcessor(stage);
-    }
-
-    @Override
-    public void dispose() {
-        stage.dispose();
-        skin.dispose();
     }
 
 }

@@ -18,6 +18,9 @@
   			red: {
   			    font: default-font, fontColor: red
   			}
+  			green: {
+  			    font: default-font, fontColor: green
+  			}
   		},
   		com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
                 default: {

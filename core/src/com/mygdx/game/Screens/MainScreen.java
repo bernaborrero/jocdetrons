@@ -92,7 +92,7 @@ public class MainScreen extends AbstractScreen {
         this.remainingLives = remainingLives;
         this.protagonista = protagonista;
         // carregar el fitxer d'skins
-        skin = new Skin(Gdx.files.internal("skins/skin.json"));
+        skin = joc.getSkin();
         skinDefault = new Skin(Gdx.files.internal("skins/uiskin.json"));
         title = new Label(joc.getTitol(),skin, "groc");
 //        livesLabel = new Label("Vides: " + remainingLives, skinDefault, "black");
@@ -331,7 +331,7 @@ public class MainScreen extends AbstractScreen {
         // Els elements es mostren en l'ordre que s'afegeixen.
         // El primer apareix a la part superior, el darrer a la part inferior.
         table.center().top();
-        table.add(title).padTop(5);
+        table.add(title).padTop(5 * Gdx.graphics.getDensity());
 //        table.add(livesLabel).padTop(5).padLeft(100);
         for(int i=0;i<remainingLives;i++){
             if(i==0){
@@ -339,8 +339,8 @@ public class MainScreen extends AbstractScreen {
             }else{
                 table.add(lives.get(i)).padTop(5).padLeft(10);
             }
-
         }
+
         table.setFillParent(true);
         stage.addActor(table);
     }

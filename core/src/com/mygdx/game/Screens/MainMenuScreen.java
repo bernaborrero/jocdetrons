@@ -29,7 +29,7 @@ public class MainMenuScreen extends AbstractScreen {
      */
     public MainMenuScreen(JocDeTrons joc) {
         super(joc);
-        skin = new Skin(Gdx.files.internal("skins/skin.json"));
+        skin = joc.getSkin();
         buttonPlayWar = new TextButton("Play with Warrior", skin);
         buttonPlayLeo = new TextButton("Play with Leonidas", skin);
         buttonExit = new TextButton("Exit", skin);
@@ -78,15 +78,18 @@ public class MainMenuScreen extends AbstractScreen {
     @Override
     public void show() {
 
-
+        float titlePadding = 40 * Gdx.graphics.getDensity();
+        float buttonsPaddingX = 150 * Gdx.graphics.getDensity();
+        float buttonsPaddingY = 60 * Gdx.graphics.getDensity();
+        float buttonsPaddingB = 20 * Gdx.graphics.getDensity();
 
         //The elements are displayed in the order you add them.
         //The first appear on top, the last at the bottom.
-        table.add(title).padBottom(40).row();
+        table.add(title).padBottom(titlePadding).row();
 
-        table.add(buttonPlayWar).size(150,60).padBottom(20).row();
-        table.add(buttonPlayLeo).size(150,60).padBottom(20).row();
-        table.add(buttonExit).size(150, 60).padBottom(20).row();
+        table.add(buttonPlayWar).size(buttonsPaddingX, buttonsPaddingY).padBottom(buttonsPaddingB).row();
+        table.add(buttonPlayLeo).size(buttonsPaddingX, buttonsPaddingY).padBottom(buttonsPaddingB).row();
+        table.add(buttonExit).size(buttonsPaddingX, buttonsPaddingY).padBottom(buttonsPaddingB).row();
         table.setFillParent(true);
         stage.addActor(table);
 
@@ -110,7 +113,6 @@ public class MainMenuScreen extends AbstractScreen {
     @Override
     public void dispose() {
         stage.dispose();
-        skin.dispose();
     }
 
 }
