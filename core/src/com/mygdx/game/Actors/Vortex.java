@@ -28,10 +28,13 @@ public class Vortex {
     private AnimatedSprite spriteAnimatedVortex;
     private Body body;
 
+    private boolean open;
+
     public Vortex(World world) {
         this.world = world;
+        this.open = false;
         loadTextures();
-        createKey();
+        createVortex();
     }
 
     private void loadTextures() {
@@ -42,7 +45,7 @@ public class Vortex {
         stoppedTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
     }
 
-    private void createKey() {
+    private void createVortex() {
         spriteVortex = new Sprite(animatedTexture);
         spriteAnimatedVortex = new AnimatedSprite(spriteVortex, FRAME_COLS, FRAME_ROWS, stoppedTexture);
 
@@ -51,7 +54,7 @@ public class Vortex {
         defCos.position.set(20.0f, 3.0f);
 
         body = world.createBody(defCos);
-        body.setUserData("Key");
+        body.setUserData("Vortex");
 
         /**
          * Definir les vores de l'sprite
@@ -75,7 +78,15 @@ public class Vortex {
     }
 
     public void initialize() {
-        spriteAnimatedVortex.setDirection(AnimatedSprite.Direction.STOPPED);
+        AnimatedSprite.Direction direction;
+
+        if (isOpen()) {
+            direction = AnimatedSprite.Direction.RIGHT;
+        } else {
+            direction = AnimatedSprite.Direction.STOPPED;
+        }
+
+        spriteAnimatedVortex.setDirection(direction);
     }
 
     public void updatePosition() {
@@ -96,4 +107,11 @@ public class Vortex {
         stoppedTexture.dispose();
     }
 
+    public boolean isOpen() {
+        return open;
+    }
+
+    public void setOpen(boolean open) {
+        this.open = open;
+    }
 }

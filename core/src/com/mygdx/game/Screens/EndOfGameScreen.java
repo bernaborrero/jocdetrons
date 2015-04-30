@@ -9,14 +9,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.mygdx.game.JocDeTrons;
 import com.mygdx.game.Actors.Personatge;
+import com.mygdx.game.JocDeTrons;
 
 /**
- * Screen to display the Game Over message
- * Created by Bernabé Borrero on 23/04/15.
+ * Screen to display the victory message
+ * Created by Bernabé Borrero on 30/04/15.
  */
-public class GameOverScreen extends AbstractScreen {
+public class EndOfGameScreen extends AbstractScreen {
 
     private Stage stage;
     private Table table;
@@ -25,20 +25,24 @@ public class GameOverScreen extends AbstractScreen {
     private Label gameOverLabel;
     private TextButton playAgainButton, exitButton;
     private MainScreen.Protagonista protagonista;
+    private boolean victory;
+
     /**
      * Constructor
      *
      * @param joc Classe principal del joc
      */
-    public GameOverScreen(JocDeTrons joc,MainScreen.Protagonista protagonista) {
+    public EndOfGameScreen(JocDeTrons joc,MainScreen.Protagonista protagonista, boolean victory) {
         super(joc);
         this.protagonista = protagonista;
+        this.victory = victory;
         stage = new Stage();
         table = new Table();
 
         skin = new Skin(Gdx.files.internal("skins/skin.json"));
 
-        gameOverLabel = new Label("Game Over!", skin, "red");
+        String message = (victory) ? "Congratulations!" : "Game Over!";
+        gameOverLabel = new Label(message, skin, "red");
         playAgainButton = new TextButton("Play Again?", skin);
         exitButton = new TextButton("Exit", skin);
 
@@ -86,4 +90,5 @@ public class GameOverScreen extends AbstractScreen {
         stage.dispose();
         skin.dispose();
     }
+
 }

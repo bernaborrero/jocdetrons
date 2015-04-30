@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.mygdx.game.Actors.Key;
 import com.mygdx.game.Actors.Personatge;
+import com.mygdx.game.Actors.Vortex;
 
 import java.util.ArrayList;
 /**
@@ -21,14 +22,16 @@ public class GestorContactes implements ContactListener {
 
     private Personatge personatge;
     private Key key;
+    private Vortex vortex;
 
 	// de moment, no implementat
 	private ArrayList<Body> bodyDestroyList;
 
-	public GestorContactes(ArrayList<Body> bodyDestroyList, Personatge personatge, Key key) {
+	public GestorContactes(ArrayList<Body> bodyDestroyList, Personatge personatge, Key key, Vortex vortex) {
         this.bodyDestroyList = bodyDestroyList;
 		this.personatge = personatge;
         this.key = key;
+        this.vortex = vortex;
 	}
 
 	@Override
@@ -53,12 +56,13 @@ public class GestorContactes implements ContactListener {
         if (fixtureA.getBody().getUserData().equals("Personatge") && fixtureB.getBody().getUserData().equals("Key")) {
             bodyDestroyList.add(fixtureB.getBody());
             key.setDead(true);
+            vortex.setOpen(true);
         }
         else if(fixtureA.getBody().getUserData().equals("Key") && fixtureB.getBody().getUserData().equals("Personatge")) {
             bodyDestroyList.add(fixtureA.getBody());
             key.setDead(true);
+            vortex.setOpen(true);
         }
-
 
 		if (fixtureA.getBody().getUserData().equals("stark")
 				&& fixtureB.getBody().getUserData().equals("primerObjecte")

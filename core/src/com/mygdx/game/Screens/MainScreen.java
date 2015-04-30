@@ -125,7 +125,7 @@ public class MainScreen extends AbstractScreen {
         key = new Key(world);
 
 		bodyDestroyList= new ArrayList<Body>();
-		world.setContactListener(new GestorContactes(bodyDestroyList, personatge, key));
+		world.setContactListener(new GestorContactes(bodyDestroyList, personatge, key, vortex));
 	}
 
     /**
@@ -306,10 +306,14 @@ public class MainScreen extends AbstractScreen {
 
             if(personatge.getLives() == 0) {
                 Gdx.app.log("JocDeTrons", "El personatge ha mort!");
-                getGame().setScreen(new GameOverScreen(getGame(),protagonista));
+                getGame().setScreen(new EndOfGameScreen(getGame(),protagonista, false));
             } else {
                 getGame().setScreen(new MainScreen(getGame(), --remainingLives, protagonista));
             }
+        }
+
+        if (vortex.isOpen()) {
+            getGame().setScreen(new EndOfGameScreen(getGame(),protagonista, false));
         }
 	}
 
