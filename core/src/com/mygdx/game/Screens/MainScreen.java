@@ -314,8 +314,8 @@ public class MainScreen extends AbstractScreen {
             }
         }
 
-        if (vortex.isOpen()) {
-            getGame().setScreen(new EndOfGameScreen(getGame(),protagonista, false));
+        if (vortex.isOpenAndInContact()) {
+            getGame().setScreen(new EndOfGameScreen(getGame(), protagonista, true));
         }
 	}
 

@@ -29,10 +29,12 @@ public class Vortex {
     private Body body;
 
     private boolean open;
+    private boolean isOpenAndInContact;
 
     public Vortex(World world) {
         this.world = world;
         this.open = false;
+        this.isOpenAndInContact = false;
         loadTextures();
         createVortex();
     }
@@ -113,5 +115,13 @@ public class Vortex {
 
     public void setOpen(boolean open) {
         this.open = open;
+    }
+
+    public boolean isOpenAndInContact() {
+        return isOpenAndInContact;
+    }
+
+    public void setOpenAndInContact(boolean isOpenAndInContact) {
+        this.isOpenAndInContact = isOpenAndInContact;
     }
 }

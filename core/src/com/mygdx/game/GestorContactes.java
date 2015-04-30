@@ -64,6 +64,17 @@ public class GestorContactes implements ContactListener {
             vortex.setOpen(true);
         }
 
+        // vortex
+        if (fixtureA.getBody().getUserData().equals("Personatge") && fixtureB.getBody().getUserData().equals("Vortex")
+            || fixtureA.getBody().getUserData().equals("Vortex") && fixtureB.getBody().getUserData().equals("Personatge")) {
+            if (vortex.isOpen()) {
+                // end game
+                vortex.setOpenAndInContact(true);
+
+            }
+        }
+
+
 		if (fixtureA.getBody().getUserData().equals("stark")
 				&& fixtureB.getBody().getUserData().equals("primerObjecte")
 				|| fixtureA.getBody().getUserData().equals("primerObjecte")
